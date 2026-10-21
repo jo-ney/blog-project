@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>Add Blog</h1>
+
+    <form action="/addblog" method="post">
+      <div style="width: 300px; display: flex; justify-content: space-between">
+        <label for="title">Title</label>
+        <input type="text" id="title" name="title" required />
+      </div>
+
+      <br />
+
+      <div style="width: 300px; display: flex; justify-content: space-between">
+        <label for="description">Description</label>
+        <textarea
+          id="description"
+          name="description"
+          rows="5"
+          required
+        ></textarea>
+      </div>
+
+      <button type="submit">Add Blog</button>
+
+      <div>
+        <ul id="ul"></ul>
+      </div>
+    </form>
+
+    <script type="module">
+      const ul = document.getElementById("ul");
+
+      ul.innerHTML = "<h1>ok</h1>";
+
+      const res = await fetch("/blog.json");
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const blogs = await res.json();
+      console.log("blogs:", blogs);
+
+      ul.innerHTML = (blogs ?? [])
+        .map((b) => {
+          return `<a href='/blog/${b.title}'><li>${b.title}</li></a>`;
+        })
+        .join("");
+    </script>
+  </body>
+</html>
